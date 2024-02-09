@@ -23,7 +23,7 @@ Una vez realizado el sorteo, se debera obtener:
 - Nombre del pais ganador junto con la puntacion total obtenida y paises que le han votado junto con los puntos asignados
 por cada uno de ellos.
 
-- Listado de canciones ordenadas por nombre
+- Listado de canciones ordenadas por nombre hecho
 
 - Listado de las 3 canciones mas votadas junto con su puntuacion. hecho
 

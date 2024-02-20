@@ -1,10 +1,13 @@
 package Eurovision;
 
+import java.nio.channels.Pipe;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Pais {
     String nombre;
     String participante;
+    private Map<Pais, Integer> paisesVotados;
     String cancion;
     Map<Pais, Integer> votos;
 
@@ -12,6 +15,7 @@ public class Pais {
         this.nombre = nombre;
         this.participante = participante;
         this.cancion = cancion;
+        paisesVotados = new HashMap<>();
         votos = new HashMap<>();
     }
 
@@ -31,6 +35,10 @@ public class Pais {
         return votos;
     }
 
+    public Map<Pais, Integer> getPaisesVotados() {
+        return paisesVotados;
+    }
+
     public void agregarVoto(Pais paisVotado, int puntos) {
         votos.put(paisVotado, puntos);
     }
@@ -46,7 +54,7 @@ public class Pais {
 
     @Override
     public String toString() {
-        return  nombre + " ha recibido la cantidad de  " + getPuntuacionTotal() + " puntos" + "\n";
+        return nombre + " ha recibido la cantidad de  " + getPuntuacionTotal() + " puntos" + "\n";
     }
 
 
@@ -86,6 +94,7 @@ public class Pais {
             paises.add(pais);
         }
     }
+
     public static void simularVotaciones(List<Pais> paises) {
         for (Pais pais : paises) {
             List<Pais> paisesVotados = new ArrayList<>(paises);
@@ -106,6 +115,8 @@ public class Pais {
         }
     }
 
+
+
     public static List<Integer> generarPuntos() {
         List<Integer> puntajes = new ArrayList<>();
         for (int i = 1; i <= 8; i++) {
@@ -114,6 +125,7 @@ public class Pais {
         Collections.shuffle(puntajes);
         return puntajes;
     }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -169,7 +181,7 @@ public class Pais {
 
 
     }
-    public static void  ordenarPaisesPorPuntuacionRecibida(List<Pais> paises) {
+    public static void ordenarPaisesPorPuntuacionRecibida(List<Pais> paises) {
         List<Pais> paisesOrdenados = new ArrayList<>(paises);
         Collections.sort(paisesOrdenados, (p1, p2) -> Integer.compare(p2.getPuntuacionTotal(), p1.getPuntuacionTotal()));
         System.out.println("Listado de los países ordenados por puntuaciones recibidas:");
@@ -177,6 +189,24 @@ public class Pais {
             System.out.println("- " + pais.nombre + ": " + pais.getPuntuacionTotal() + " puntos");
         }
     }
+    public static void listarPaisesPorVotacionesOrdenadas(List<Pais> paises) {
+        System.out.println("Listado de todos los países por orden alfabético junto con las votaciones realizadas ordenadas de mayor a menor:");
+        List<Pais> paisesOrdenadosAlfabeticamente = new ArrayList<>(paises);
+        Collections.sort(paisesOrdenadosAlfabeticamente, Comparator.comparing(p -> p.nombre.toLowerCase()));
+        for (Pais pais : paisesOrdenadosAlfabeticamente) {
+            System.out.println("País: " + pais.nombre);
+            System.out.println("Votaciones:");
+            List<Map.Entry<Pais, Integer>> votosOrdenados = new ArrayList<>(pais.votos.entrySet());
+            votosOrdenados.sort((v1, v2) -> v2.getValue().compareTo(v1.getValue()));
+            for (Map.Entry<Pais, Integer> entry : votosOrdenados) {
+                Pais paisVotado = entry.getKey();
+                int puntos = entry.getValue();
+                System.out.println("- " + paisVotado.nombre + ": " + puntos + " puntos");
+            }
+            System.out.println();
+        }
+    }
+
 
 
     public static void cancionesOrdenadasPorNombre(List<Pais> paises) {
@@ -192,6 +222,34 @@ public class Pais {
         }
         System.out.println();
     }
+    public static void mostrarPaisGanador(List<Pais> paises) {
+        Pais ganador = null;
+        int maxPuntuacion = Integer.MIN_VALUE;
+
+        // Encontrar al país ganador
+        for (Pais pais : paises) {
+            int puntuacionTotal = pais.getPuntuacionTotal();
+            if (puntuacionTotal > maxPuntuacion) {
+                maxPuntuacion = puntuacionTotal;
+                ganador = pais;
+            }
+        }
+
+        // Imprimir información del país ganador y sus votos
+        if (ganador != null) {
+            System.out.println("País ganador: " + ganador.nombre);
+            System.out.println("Puntuación total: " + maxPuntuacion + " puntos");
+            System.out.println("Países que le han votado junto con los puntos asignados:");
+            for (Map.Entry<Pais, Integer> entry : ganador.votos.entrySet()) {
+                Pais paisVotante = entry.getKey();
+                int puntos = entry.getValue();
+                System.out.println("- " + paisVotante.nombre + ": " + puntos + " puntos");
+            }
+        } else {
+            System.out.println("No se encontró un país ganador.");
+        }
+    }
+
 
 
 

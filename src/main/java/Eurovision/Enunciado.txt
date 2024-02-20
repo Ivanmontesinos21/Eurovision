@@ -18,7 +18,7 @@ Una vez realizado el sorteo, se debera obtener:
 
 - Listado de todos los paises por orden alfabetico junto con las votaciones realizadas ordenadas de mayor a menor.
 
-- Listado de los paises ordenados por puntuaciones recibidas.
+- Listado de los paises ordenados por puntuaciones recibidas. hecho
 
 - Nombre del pais ganador junto con la puntacion total obtenida y paises que le han votado junto con los puntos asignados
 por cada uno de ellos.
